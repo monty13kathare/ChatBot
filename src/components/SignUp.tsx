@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import { User, Mail, Lock, Camera, Eye, EyeOff } from "lucide-react";
 import type { AuthCredentials, AuthResponse } from "../types";
-import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
     const [credentials, setCredentials] = useState<AuthCredentials>({
