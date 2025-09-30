@@ -82,7 +82,7 @@ const SignUp = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         if (!validateForm()) return;
 
@@ -101,12 +101,12 @@ const SignUp = () => {
                 token: crypto.randomUUID(),
                 expiresIn: 3600,
             };
-            navigate("/")
 
             localStorage.setItem("authToken", mockResponse.token);
             localStorage.setItem("user", JSON.stringify(mockResponse.user));
 
-
+            // ✅ redirect + refresh
+            window.location.href = "/";
 
         } catch (error) {
             console.error("Sign up failed:", error);
@@ -139,201 +139,204 @@ const SignUp = () => {
     const submitButtonClasses = "w-full bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-600 hover:to-indigo-600 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:shadow-lg flex items-center justify-center gap-2";
 
     return (
-        <div className={containerClasses}>
-            {/* Header */}
-            <div className={headerClasses}>
-                <h2 className="text-xl md:text-2xl font-bold text-center">Create Account</h2>
-                <p className="text-purple-200 text-center mt-2 text-sm">Join our community today</p>
-            </div>
+        <div className="w-full h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-cyan-900 flex justify-center items-center">
+            <div className={containerClasses}>
+                {/* Header */}
+                <div className={headerClasses}>
+                    <h2 className="text-xl md:text-2xl font-bold text-center">Create Account</h2>
+                    <p className="text-purple-200 text-center mt-2 text-sm">Join our community today</p>
+                </div>
 
-            {/* Form */}
-            <form onSubmit={handleSubmit} className={formClasses}>
-                {/* Avatar Upload */}
-                <div className="flex flex-col items-center space-y-3">
-                    <div
-                        onClick={() => fileInputRef.current?.click()}
-                        className={avatarClasses}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                                fileInputRef.current?.click();
-                            }
-                        }}
-                    >
-                        {imagePreview ? (
-                            <img
-                                src={imagePreview}
-                                alt="Profile preview"
-                                className="w-full h-full object-cover"
-                            />
-                        ) : (
-                            <Camera className="w-5 h-5 md:w-6 md:h-6 text-gray-400" />
+                {/* Form */}
+                <form onSubmit={handleSubmit} className={formClasses}>
+                    {/* Avatar Upload */}
+                    <div className="flex flex-col items-center space-y-3">
+                        <div
+                            onClick={() => fileInputRef.current?.click()}
+                            className={avatarClasses}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    fileInputRef.current?.click();
+                                }
+                            }}
+                        >
+                            {imagePreview ? (
+                                <img
+                                    src={imagePreview}
+                                    alt="Profile preview"
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <Camera className="w-5 h-5 md:w-6 md:h-6 text-gray-400" />
+                            )}
+                        </div>
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            className="hidden"
+                            aria-label="Upload profile picture"
+                        />
+                        {errors.avatar && (
+                            <p className="text-red-400 text-sm text-center">⚠️ {errors.avatar}</p>
                         )}
                     </div>
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="hidden"
-                        aria-label="Upload profile picture"
-                    />
-                    {errors.avatar && (
-                        <p className="text-red-400 text-sm text-center">⚠️ {errors.avatar}</p>
-                    )}
-                </div>
 
-                {/* Name Field */}
-                <div className={inputContainerClasses}>
-                    <label htmlFor="name" className={labelClasses}>
-                        Full Name
-                    </label>
-                    <div className={inputWrapperClasses}>
-                        <User className={iconClasses} />
-                        <input
-                            id="name"
-                            type="text"
-                            name="name"
-                            value={credentials.name}
-                            onChange={handleChange}
-                            placeholder="Your full name"
-                            className={getInputClasses(errors.name)}
-                            aria-invalid={!!errors.name}
-                            aria-describedby={errors.name ? "name-error" : undefined}
-                        />
+                    {/* Name Field */}
+                    <div className={inputContainerClasses}>
+                        <label htmlFor="name" className={labelClasses}>
+                            Full Name
+                        </label>
+                        <div className={inputWrapperClasses}>
+                            <User className={iconClasses} />
+                            <input
+                                id="name"
+                                type="text"
+                                name="name"
+                                value={credentials.name}
+                                onChange={handleChange}
+                                placeholder="Your full name"
+                                className={getInputClasses(errors.name)}
+                                aria-invalid={!!errors.name}
+                                aria-describedby={errors.name ? "name-error" : undefined}
+                            />
+                        </div>
+                        {errors.name && (
+                            <p id="name-error" className="text-red-400 text-sm flex items-center gap-1">
+                                ⚠️ {errors.name}
+                            </p>
+                        )}
                     </div>
-                    {errors.name && (
-                        <p id="name-error" className="text-red-400 text-sm flex items-center gap-1">
-                            ⚠️ {errors.name}
-                        </p>
-                    )}
-                </div>
 
-                {/* Email Field */}
-                <div className={inputContainerClasses}>
-                    <label htmlFor="email" className={labelClasses}>
-                        Email
-                    </label>
-                    <div className={inputWrapperClasses}>
-                        <Mail className={iconClasses} />
-                        <input
-                            id="email"
-                            type="email"
-                            name="email"
-                            value={credentials.email}
-                            onChange={handleChange}
-                            placeholder="you@example.com"
-                            className={getInputClasses(errors.email)}
-                            aria-invalid={!!errors.email}
-                            aria-describedby={errors.email ? "email-error" : undefined}
-                        />
+                    {/* Email Field */}
+                    <div className={inputContainerClasses}>
+                        <label htmlFor="email" className={labelClasses}>
+                            Email
+                        </label>
+                        <div className={inputWrapperClasses}>
+                            <Mail className={iconClasses} />
+                            <input
+                                id="email"
+                                type="email"
+                                name="email"
+                                value={credentials.email}
+                                onChange={handleChange}
+                                placeholder="you@example.com"
+                                className={getInputClasses(errors.email)}
+                                aria-invalid={!!errors.email}
+                                aria-describedby={errors.email ? "email-error" : undefined}
+                            />
+                        </div>
+                        {errors.email && (
+                            <p id="email-error" className="text-red-400 text-sm flex items-center gap-1">
+                                ⚠️ {errors.email}
+                            </p>
+                        )}
                     </div>
-                    {errors.email && (
-                        <p id="email-error" className="text-red-400 text-sm flex items-center gap-1">
-                            ⚠️ {errors.email}
-                        </p>
-                    )}
-                </div>
 
-                {/* Password Field */}
-                <div className={inputContainerClasses}>
-                    <label htmlFor="password" className={labelClasses}>
-                        Password
-                    </label>
-                    <div className={inputWrapperClasses}>
-                        <Lock className={iconClasses} />
-                        <input
-                            id="password"
-                            type={showPassword ? "text" : "password"}
-                            name="password"
-                            value={credentials.password}
-                            onChange={handleChange}
-                            placeholder="Enter password"
-                            className={getInputClasses(errors.password)}
-                            aria-invalid={!!errors.password}
-                            aria-describedby={errors.password ? "password-error" : undefined}
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className={toggleButtonClasses}
-                            aria-label={showPassword ? "Hide password" : "Show password"}
-                        >
-                            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                        </button>
+                    {/* Password Field */}
+                    <div className={inputContainerClasses}>
+                        <label htmlFor="password" className={labelClasses}>
+                            Password
+                        </label>
+                        <div className={inputWrapperClasses}>
+                            <Lock className={iconClasses} />
+                            <input
+                                id="password"
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={credentials.password}
+                                onChange={handleChange}
+                                placeholder="Enter password"
+                                className={getInputClasses(errors.password)}
+                                aria-invalid={!!errors.password}
+                                aria-describedby={errors.password ? "password-error" : undefined}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className={toggleButtonClasses}
+                                aria-label={showPassword ? "Hide password" : "Show password"}
+                            >
+                                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                        </div>
+                        {errors.password && (
+                            <p id="password-error" className="text-red-400 text-sm flex items-center gap-1">
+                                ⚠️ {errors.password}
+                            </p>
+                        )}
                     </div>
-                    {errors.password && (
-                        <p id="password-error" className="text-red-400 text-sm flex items-center gap-1">
-                            ⚠️ {errors.password}
-                        </p>
-                    )}
-                </div>
 
-                {/* Confirm Password Field */}
-                <div className={inputContainerClasses}>
-                    <label htmlFor="confirmPassword" className={labelClasses}>
-                        Confirm Password
-                    </label>
-                    <div className={inputWrapperClasses}>
-                        <Lock className={iconClasses} />
-                        <input
-                            id="confirmPassword"
-                            type={showConfirmPassword ? "text" : "password"}
-                            name="confirmPassword"
-                            value={confirmPassword}
-                            onChange={handleChange}
-                            placeholder="Confirm password"
-                            className={getInputClasses(errors.confirmPassword)}
-                            aria-invalid={!!errors.confirmPassword}
-                            aria-describedby={errors.confirmPassword ? "confirm-password-error" : undefined}
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                            className={toggleButtonClasses}
-                            aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
-                        >
-                            {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                        </button>
+                    {/* Confirm Password Field */}
+                    <div className={inputContainerClasses}>
+                        <label htmlFor="confirmPassword" className={labelClasses}>
+                            Confirm Password
+                        </label>
+                        <div className={inputWrapperClasses}>
+                            <Lock className={iconClasses} />
+                            <input
+                                id="confirmPassword"
+                                type={showConfirmPassword ? "text" : "password"}
+                                name="confirmPassword"
+                                value={confirmPassword}
+                                onChange={handleChange}
+                                placeholder="Confirm password"
+                                className={getInputClasses(errors.confirmPassword)}
+                                aria-invalid={!!errors.confirmPassword}
+                                aria-describedby={errors.confirmPassword ? "confirm-password-error" : undefined}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                className={toggleButtonClasses}
+                                aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                            >
+                                {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                        </div>
+                        {errors.confirmPassword && (
+                            <p id="confirm-password-error" className="text-red-400 text-sm flex items-center gap-1">
+                                ⚠️ {errors.confirmPassword}
+                            </p>
+                        )}
                     </div>
-                    {errors.confirmPassword && (
-                        <p id="confirm-password-error" className="text-red-400 text-sm flex items-center gap-1">
-                            ⚠️ {errors.confirmPassword}
-                        </p>
+
+                    {/* Submit Button */}
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className={submitButtonClasses}
+                    >
+                        {isLoading ? (
+                            <>
+                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                <span>Creating Account...</span>
+                            </>
+                        ) : (
+                            <>
+                                <span>🚀</span>
+                                <span>Create Account</span>
+                            </>
+                        )}
+                    </button>
+
+                    {/* Submit Error */}
+                    {errors.submit && (
+                        <p className="text-red-400 text-sm text-center">⚠️ {errors.submit}</p>
                     )}
-                </div>
 
-                {/* Submit Button */}
-                <button
-                    type="submit"
-                    disabled={isLoading}
-                    className={submitButtonClasses}
-                >
-                    {isLoading ? (
-                        <>
-                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                            <span>Creating Account...</span>
-                        </>
-                    ) : (
-                        <>
-                            <span>🚀</span>
-                            <span>Create Account</span>
-                        </>
-                    )}
-                </button>
-
-                {/* Submit Error */}
-                {errors.submit && (
-                    <p className="text-red-400 text-sm text-center">⚠️ {errors.submit}</p>
-                )}
-
-                {/* Additional Info */}
-                <div className="text-center text-gray-400 text-xs pt-4 border-t border-gray-800">
-                    <p>By creating an account, you agree to our Terms of Service</p>
-                </div>
-            </form>
+                    {/* Additional Info */}
+                    <div className="text-center text-gray-400 text-xs pt-4 border-t border-gray-800">
+                        <p>By creating an account, you agree to our Terms of Service</p>
+                    </div>
+                </form>
+            </div>
         </div>
+
     );
 };
 
