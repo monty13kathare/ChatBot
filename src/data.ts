@@ -50,3 +50,27 @@ export const QUICK_ACTIONS = [
         prompt: 'Analyze text, code, images, or data and provide insights or summaries 🖼️'
     }
 ];
+
+// Constants
+export const THEME = {
+    light: {
+        background: '#ffffff',
+        surface: '#f8fafc',
+        border: '#e2e8f0',
+        text: {
+            primary: '#1e293b',
+            secondary: '#64748b',
+            tertiary: '#94a3b8'
+        }
+    },
+    dark: {
+        background: '#0f172a',
+        surface: '#1e293b',
+        border: '#334155',
+        text: {
+            primary: '#f1f5f9',
+            secondary: '#cbd5e1',
+            tertiary: '#64748b'
+        }
+    }
+};

@@ -33,15 +33,18 @@ const ChatBot: React.FC<ChatBotProps> = ({
     user
 }) => {
     const [sessions, setSessions] = useState<ChatSession[]>([INITIAL_SESSION]);
-    const [currentSessionId, setCurrentSessionId] = useState('1');
+    const [currentSessionId] = useState('1');
     const [inputValue, setInputValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isOnline, setIsOnline] = useState(true);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isDarkMode, setIsDarkMode] = useState(true);
+    const [isDarkMode] = useState(true);
     const [attachments, setAttachments] = useState<FileAttachment[]>([]);
     const [isDragOver, setIsDragOver] = useState(false);
     const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
+
+    console.log('copiedMessageId', copiedMessageId)
+    console.log('isOnline', isOnline)
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -507,6 +510,7 @@ const ChatBot: React.FC<ChatBotProps> = ({
                                 onRemoveAttachment={removeAttachment}
                                 isDarkMode={isDarkMode}
                                 user={user}
+
                             />
                         ))}
 

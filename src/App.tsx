@@ -1,8 +1,13 @@
-import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import ChatBot from './ChatBot';
-import type { AuthResponse, ChatSession } from './types';
-import SignUp from './components/SignUp';
+import { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import ChatBot from "./ChatBot";
+import type { ChatSession } from "./types";
+import SignUp from "./components/SignUp";
 
 function App() {
   const [user, setUser] = useState<any>(null);
@@ -11,8 +16,8 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    const authUser = JSON.parse(localStorage.getItem('user') || 'null');
+    const token = localStorage.getItem("authToken");
+    const authUser = JSON.parse(localStorage.getItem("user") || "null");
 
     if (token && authUser) {
       setUser(authUser);
@@ -21,8 +26,8 @@ function App() {
     // Initialize sessions only if none exist
     if (!sessions.length) {
       const initialSession: ChatSession = {
-        id: '1',
-        title: 'New Chat',
+        id: "1",
+        title: "New Chat",
         messages: [],
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -32,11 +37,9 @@ function App() {
     }
   }, [sessions.length]); // Added dependency to prevent unnecessary re-initialization
 
-
-
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
     setUser(null);
     setSessions([]);
     setCurrentSessionId(null);
@@ -54,10 +57,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route
-          path="/auth"
-          element={user ? <Navigate to="/" /> : <SignUp />}
-        />
+        <Route path="/auth" element={user ? <Navigate to="/" /> : <SignUp />} />
 
         <Route
           path="/"
@@ -73,8 +73,18 @@ function App() {
                       className="lg:hidden p-2 rounded-2xl bg-white/20 hover:bg-white/30 transition-colors"
                       aria-label="Toggle menu"
                     >
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                      <svg
+                        className="w-6 h-6 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 6h16M4 12h16M4 18h16"
+                        />
                       </svg>
                     </button>
 
@@ -100,19 +110,21 @@ function App() {
                         {user?.avatar ? (
                           <img
                             src={user.avatar}
-                            alt={user?.name || 'User'}
+                            alt={user?.name || "User"}
                             className="w-full h-full rounded-full object-cover"
                           />
                         ) : (
                           <span className="text-white font-semibold text-sm">
-                            {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                            {user?.name?.charAt(0)?.toUpperCase() || "U"}
                           </span>
                         )}
                       </div>
 
                       {/* User Name - Hidden on smaller screens */}
                       <div className="hidden xl:block">
-                        <p className="text-white font-medium text-sm">{user?.name}</p>
+                        <p className="text-white font-medium text-sm">
+                          {user?.name}
+                        </p>
                         <p className="text-gray-200 text-xs">{user?.email}</p>
                       </div>
                     </div>
@@ -122,12 +134,12 @@ function App() {
                       {user?.avatar ? (
                         <img
                           src={user.avatar}
-                          alt={user?.name || 'User'}
+                          alt={user?.name || "User"}
                           className="w-full h-full rounded-full object-cover"
                         />
                       ) : (
                         <span className="text-white font-semibold text-xs">
-                          {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+                          {user?.name?.charAt(0)?.toUpperCase() || "U"}
                         </span>
                       )}
                     </div>
@@ -169,23 +181,40 @@ function App() {
                 {/* Main Chat Area with Sidebar */}
                 <div className="flex flex-1 h-[calc(100vh-4rem)] lg:h-[calc(100vh-5rem)] overflow-hidden">
                   {/* Sidebar - Mobile Responsive */}
-                  <aside className={`
+                  <aside
+                    className={`
                     fixed lg:static inset-y-0 left-0 z-50
                     w-64 lg:w-80 transform transition-transform duration-300 ease-in-out
-                    ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+                    ${isSidebarOpen
+                        ? "translate-x-0"
+                        : "-translate-x-full lg:translate-x-0"
+                      }
                     bg-white/10 dark:bg-gray-800/30 backdrop-blur-xl
                     border-r border-white/10
                     overflow-y-auto
-                  `}>
+                  `}
+                  >
                     <div className="p-4 lg:p-6">
                       <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-lg lg:text-xl font-semibold text-white">Chat Sessions</h2>
+                        <h2 className="text-lg lg:text-xl font-semibold text-white">
+                          Chat Sessions
+                        </h2>
                         <button
                           onClick={() => setIsSidebarOpen(false)}
                           className="lg:hidden p-1 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
                         >
-                          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          <svg
+                            className="w-5 h-5 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
                           </svg>
                         </button>
                       </div>
@@ -196,15 +225,17 @@ function App() {
                           <div
                             key={session.id}
                             className={`p-3 rounded-2xl cursor-pointer transition-all duration-200 ${currentSessionId === session.id
-                              ? 'bg-white/20 text-white shadow-lg'
-                              : 'bg-white/5 text-gray-200 hover:bg-white/10'
+                                ? "bg-white/20 text-white shadow-lg"
+                                : "bg-white/5 text-gray-200 hover:bg-white/10"
                               }`}
                             onClick={() => {
                               setCurrentSessionId(session.id);
                               setIsSidebarOpen(false); // Close sidebar on mobile when session is selected
                             }}
                           >
-                            <div className="font-medium truncate">{session.title}</div>
+                            <div className="font-medium truncate">
+                              {session.title}
+                            </div>
                             <div className="text-xs opacity-70 mt-1">
                               {session.messages.length} messages
                             </div>

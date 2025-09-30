@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import {
     Copy,
     Check,
@@ -7,11 +7,8 @@ import {
     Expand,
     Shrink,
     ExternalLink,
-    Heart,
-    Bookmark,
     Share,
     Clock,
-    User,
     Bot,
     File,
     FileText,
@@ -22,32 +19,8 @@ import {
     MoreVertical
 } from 'lucide-react';
 import type { MessageBubbleProps, FileAttachment } from './types';
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 
-// Constants
-const THEME = {
-    light: {
-        background: '#ffffff',
-        surface: '#f8fafc',
-        border: '#e2e8f0',
-        text: {
-            primary: '#1e293b',
-            secondary: '#64748b',
-            tertiary: '#94a3b8'
-        }
-    },
-    dark: {
-        background: '#0f172a',
-        surface: '#1e293b',
-        border: '#334155',
-        text: {
-            primary: '#f1f5f9',
-            secondary: '#cbd5e1',
-            tertiary: '#64748b'
-        }
-    }
-} as const;
+
 
 const FILE_ICONS = {
     image: ImageIcon,
@@ -73,7 +46,6 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     const [expandedImages, setExpandedImages] = useState<Set<string>>(new Set());
     const [showMobileActions, setShowMobileActions] = useState(false);
 
-    const theme = isDarkMode ? THEME.dark : THEME.light;
 
     // Memoized content analysis
     const containsCode = useMemo(() =>
