@@ -86,7 +86,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             .replace(/_(.*?)_/g, '<em class="italic text-inherit">$1</em>');
 
         // Links [text](url)
-        formatted = formatted.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline hover:text-blue-800 break-all">$1</a>');
+        formatted = formatted.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-indigo-600 underline hover:text-indigo-800 break-all">$1</a>');
 
         // Images ![alt](url)
         formatted = formatted.replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, '<img src="$2" alt="$1" class="rounded-lg max-w-full my-2 sm:my-3 shadow-sm" />');
@@ -477,7 +477,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 {/* Message Bubble */}
                 <div
                     className={`relative rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2 sm:py-3 shadow-sm border transition-all duration-200 hover:shadow-md ${isUser
-                        ? 'bg-blue-500 text-white border-blue-600 rounded-br-none sm:rounded-br-none'
+                        ? 'bg-indigo-700 text-white border-indigo-700 rounded-br-none sm:rounded-br-none'
                         : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700 rounded-bl-none sm:rounded-bl-none'
                         }`}
                 >
@@ -502,12 +502,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
                     {/* Message Footer */}
                     <div className={`flex justify-between items-center mt-2 sm:mt-3 pt-2 sm:pt-3 ${isUser
-                        ? 'border-t border-blue-400/40'
+                        ? 'border-t border-indigo-400/40'
                         : 'border-t border-slate-200 dark:border-slate-600'
                         }`}>
                         {showTimestamps && (
                             <span className={`text-xs flex items-center gap-1 ${isUser
-                                ? 'text-blue-200'
+                                ? 'text-indigo-200'
                                 : 'text-slate-500 dark:text-slate-400'
                                 }`}>
                                 <Clock className="w-2 h-2 sm:w-3 sm:h-3" />

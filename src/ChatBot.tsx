@@ -63,9 +63,9 @@ const ChatBot: React.FC<ChatBotProps> = ({
     );
 
     // Initialize the Gemini API client
-    const ai = useMemo(() => new GoogleGenAI({
+    const ai = new GoogleGenAI({
         apiKey: "AIzaSyD0TOmsdZSkSWSyyiOVsJWUmlblbKEVL54",
-    }), []);
+    });
 
     // Auto-scroll to bottom when new messages are added
     useEffect(() => {
