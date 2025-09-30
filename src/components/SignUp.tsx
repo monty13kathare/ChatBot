@@ -4,7 +4,6 @@ import type { AuthCredentials, AuthResponse } from "../types";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-    const navigate = useNavigate()
     const [credentials, setCredentials] = useState<AuthCredentials>({
         name: "",
         email: "",
